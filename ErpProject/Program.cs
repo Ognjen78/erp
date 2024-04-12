@@ -1,5 +1,6 @@
 using ErpProject.Controllers;
 using ErpProject.Interface;
+using ErpProject.Profile;
 using ErpProject.Repository;
 using Microsoft.EntityFrameworkCore;
 using WebApplication5.Helpers;
@@ -25,7 +26,10 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IShippingRepository, ShippingRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAuthenticationHelper, AuthenticationHelper>();
 builder.Services.AddScoped<PasswordHashService>();
+
+builder.Services.AddAutoMapper(typeof(DtoProfile));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

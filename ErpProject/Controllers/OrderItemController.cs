@@ -1,4 +1,6 @@
-﻿using ErpProject.Interface;
+﻿using AutoMapper;
+using ErpProject.DTO;
+using ErpProject.Interface;
 using ErpProject.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +13,12 @@ namespace ErpProject.Controllers
     public class OrderItemController : Controller
     {
         private readonly IOrderItemRepository orderItemRepository;
+        private readonly IMapper mapper;
 
-        public OrderItemController(IOrderItemRepository orderItemRepository) 
+        public OrderItemController(IOrderItemRepository orderItemRepository, IMapper mapper) 
         {
             this.orderItemRepository = orderItemRepository; 
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -49,16 +53,16 @@ namespace ErpProject.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<OrderItem> CreateOrderItem([FromBody] OrderItem orderItem)
         {
-           // try
-            //{
+           try
+           {
                 
                 orderItemRepository.addOrderItem(orderItem);
-                return Ok(orderItem);
-         //   }
-           /* catch
-            {
+                return Ok(mapper.Map<OrderItemConfirmDto>(orderItem));
+           }
+           catch
+           {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Insert error");
-            } */
+           } 
         }
 
         [HttpPut("{id}")]

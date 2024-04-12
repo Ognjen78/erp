@@ -1,4 +1,6 @@
-﻿using ErpProject.Interface;
+﻿using AutoMapper;
+using ErpProject.DTO;
+using ErpProject.Interface;
 using ErpProject.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +13,12 @@ namespace ErpProject.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderRepository orderRepository;
+        private readonly IMapper mapper;
 
-        public OrderController(IOrderRepository orderRepository)
+        public OrderController(IOrderRepository orderRepository, IMapper mapper)
         {
             this.orderRepository = orderRepository;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -47,11 +51,16 @@ namespace ErpProject.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<Order> CreateOrder([FromBody] Order order)
-        { 
-               
+        {
+            try
+            {
                 orderRepository.addOrder(order);
-                return Ok(order);
-          
+                return Ok(mapper.Map<OrderConfirmDto>(order));
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Post Error");
+            }
             
         }
 

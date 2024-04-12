@@ -1,4 +1,6 @@
-﻿using ErpProject.Interface;
+﻿using AutoMapper;
+using ErpProject.DTO;
+using ErpProject.Interface;
 using ErpProject.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
@@ -13,9 +15,11 @@ namespace ErpProject.Controllers
     public class ProductController : Controller
     {
         private readonly IProductRepository productRepository;
-        public ProductController(IProductRepository productRepository) 
+        private readonly IMapper mapper;
+        public ProductController(IProductRepository productRepository, IMapper mapper) 
         {
             this.productRepository = productRepository;
+            this.mapper = mapper;
        
         }
 
@@ -52,8 +56,15 @@ namespace ErpProject.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<Product> CreateProduct([FromBody]Product product)
         {
-            Product confirm = productRepository.addProduct(product);
-            return Ok(confirm);
+            try
+            {
+                Product confirm = productRepository.addProduct(product);
+                return Ok(mapper.Map<ProductConfirmDto>(product));
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [HttpPut("{id}")]

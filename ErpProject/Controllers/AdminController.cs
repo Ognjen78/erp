@@ -1,4 +1,6 @@
-﻿using ErpProject.Interface;
+﻿using AutoMapper;
+using ErpProject.DTO;
+using ErpProject.Interface;
 using ErpProject.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +16,12 @@ namespace ErpProject.Controllers
     {
         private readonly IAdminRepository adminRepository;
         private readonly PasswordHashService passwordHashService;
-        public AdminController(IAdminRepository adminRepository, PasswordHashService passwordHashService)
+        private readonly IMapper mapper;
+        public AdminController(IAdminRepository adminRepository, PasswordHashService passwordHashService, IMapper mapper)
         {
             this.passwordHashService = passwordHashService;
             this.adminRepository = adminRepository;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -52,8 +56,8 @@ namespace ErpProject.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<Admin> CreateAdmin([FromBody] Admin admin)
         {
-            //try
-            //{
+            try
+            {
                 bool check = adminRepository.uniqueEmail(admin.email);
                 if (check)
                 {
@@ -64,12 +68,12 @@ namespace ErpProject.Controllers
                 admin.salt = password.Item2;
 
                 Admin ad = adminRepository.addAdmin(admin);
-                return Ok(ad);
-            //}
-           /* catch
+                return Ok(mapper.Map<AdminConfirmDto>(ad));
+            }
+            catch
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Insert error");
-            } */
+            } 
         }
 
         [HttpPut("{id}")]

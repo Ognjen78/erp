@@ -1,4 +1,6 @@
-﻿using ErpProject.Interface;
+﻿using AutoMapper;
+using ErpProject.DTO;
+using ErpProject.Interface;
 using ErpProject.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +13,12 @@ namespace ErpProject.Controllers
     public class ShippingController : Controller
     {
         private readonly IShippingRepository shippingRepository;
+        private readonly IMapper mapper;
 
-        public ShippingController(IShippingRepository shippingRepository)
+        public ShippingController(IShippingRepository shippingRepository, IMapper mapper)
         {
             this.shippingRepository = shippingRepository;   
+            this.mapper = mapper;   
         }
 
 
@@ -50,11 +54,16 @@ namespace ErpProject.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<ShippingAddress> CreateShippingAddress([FromBody] ShippingAddress shippingAddress)
         {
-            
-                
+            try
+            {
+
                 shippingRepository.addShippingAddress(shippingAddress);
-                return Ok(shippingAddress);
-            
+                return Ok(mapper.Map<ShippingConfirmDto>(shippingAddress));
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Post shipping error");
+            }
            
         }
 

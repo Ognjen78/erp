@@ -1,9 +1,8 @@
 ﻿namespace ErpProject.DTO
 {
-    public class UserLoginDto
+    public class AdminConfirmDto
     {
         public string username { get; set; }
-        public string password { get; set; }
-   
+        public string email { get; set; }
     }
 }
