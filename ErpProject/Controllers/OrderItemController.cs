@@ -2,6 +2,7 @@
 using ErpProject.DTO;
 using ErpProject.Interface;
 using ErpProject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,7 @@ namespace ErpProject.Controllers
     [ApiController]
     [Route("/api/sportbasic/orderItems")]
     [EnableCors("AllowOrigin")]
+    [Authorize(Policy = "RequireAdminRole")]
     public class OrderItemController : Controller
     {
         private readonly IOrderItemRepository orderItemRepository;

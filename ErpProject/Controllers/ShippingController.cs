@@ -2,6 +2,7 @@
 using ErpProject.DTO;
 using ErpProject.Interface;
 using ErpProject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -49,6 +50,7 @@ namespace ErpProject.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "RequireAdminRole")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -68,6 +70,7 @@ namespace ErpProject.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "RequireAdminRole")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -86,6 +89,7 @@ namespace ErpProject.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "RequireAdminRole")]
         public IActionResult DeleteShippingAddress(int id)
         {
             try

@@ -1,6 +1,7 @@
 ﻿using ErpProject.Controllers;
 using ErpProject.Interface;
 using ErpProject.Models;
+using System.Security.Cryptography;
 
 namespace ErpProject.Repository
 {
@@ -8,6 +9,7 @@ namespace ErpProject.Repository
     {
 
         private readonly ApplicationDbContext dbContext;
+        private readonly static int iterations = 1000;
 
         public AdminRepository(ApplicationDbContext dbContext)
         {
@@ -48,11 +50,44 @@ namespace ErpProject.Repository
 
         }
 
+        public bool AdminUsername(string username)
+        {
+            return dbContext.Admins.Any(u => u.username ==  username);
+            
+        }
+
         public bool uniqueEmail(string email)
         {
-            var unique = dbContext.Admins.Any(u => u.email == email);
-            return unique;
+            return dbContext.Admins.Any(u => u.email == email);
+           
         }
+
+        public bool AdminWithCredentialsExists(string username, string password)
+        {
+            Admin admin = dbContext.Admins.FirstOrDefault(u => u.username == username);
+
+            if (admin == null) { return false; }
+
+            if (VerifyPassword(password, admin.password, admin.salt))
+            {
+                return true;
+            }
+
+            return false;
+
+
+        }
+        public bool VerifyPassword(string password, string savedHash, string savedSalt)
+        {
+            var saltBytes = Convert.FromBase64String(savedSalt);
+            var rfc2898DeriveBytes = new Rfc2898DeriveBytes(password, saltBytes, iterations);
+            if (Convert.ToBase64String(rfc2898DeriveBytes.GetBytes(256)) == savedHash)
+            {
+                return true;
+            }
+            return false;
+        }
+
 
     }
 }

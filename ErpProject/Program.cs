@@ -2,10 +2,14 @@ using ErpProject.Controllers;
 using ErpProject.Interface;
 using ErpProject.Profile;
 using ErpProject.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using WebApplication5.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
+var config = builder.Configuration;
 
 builder.Services.AddCors(options =>
 {
@@ -31,6 +35,32 @@ builder.Services.AddScoped<PasswordHashService>();
 
 builder.Services.AddAutoMapper(typeof(DtoProfile));
 
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;  
+    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = config["Jwt:Issuer"],
+        ValidAudience = config["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey
+                 (Encoding.UTF8.GetBytes(config["Jwt:Key"]!)),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true
+    };
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireAdminRole", policy =>
+        policy.RequireRole("Admin"));
+});
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -47,9 +77,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseCors();
 
-app.UseAuthorization();
+
 
 app.MapControllers();
 

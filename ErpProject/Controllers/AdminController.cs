@@ -2,6 +2,7 @@
 using ErpProject.DTO;
 using ErpProject.Interface;
 using ErpProject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -12,6 +13,7 @@ namespace ErpProject.Controllers
     [ApiController]
     [Route("/api/sportbasic/admins")]
     [EnableCors("AllowOrigin")]
+    [Authorize(Policy = "RequireAdminRole")]
     public class AdminController : Controller
     {
         private readonly IAdminRepository adminRepository;
