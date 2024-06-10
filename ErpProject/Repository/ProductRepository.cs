@@ -54,6 +54,8 @@ namespace ErpProject.Repository
             updateProduct.category = product.category;
             updateProduct.description = product.description;
             updateProduct.stock = product.stock;
+            updateProduct.gender = product.gender;
+            updateProduct.imageUrl = product.imageUrl;
             dbContext.SaveChanges();
             return product;
         }
@@ -83,11 +85,11 @@ namespace ErpProject.Repository
               
         }
 
-        public List<Product> getAllProducts(int page, int pageSize)
+       /* public List<Product> getAllProducts(int page, int pageSize)
         {
             int skip = (page - 1) * pageSize;
             return dbContext.Products.Skip(skip).Take(pageSize).ToList();
         }
-
+       */
     }
 }

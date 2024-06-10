@@ -14,5 +14,6 @@ namespace ErpProject.Interface
         public bool uniqueEmail(string email);
 
         public bool AdminWithCredentialsExists(string username, string password);
+        Admin GetAdminByUsername(string username);
     }
 }

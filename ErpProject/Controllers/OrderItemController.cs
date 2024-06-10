@@ -11,7 +11,7 @@ namespace ErpProject.Controllers
     [ApiController]
     [Route("/api/sportbasic/orderItems")]
     [EnableCors("AllowOrigin")]
-    [Authorize(Policy = "RequireAdminRole")]
+    //[Authorize(Policy = "RequireAdminRole")]
     public class OrderItemController : Controller
     {
         private readonly IOrderItemRepository orderItemRepository;

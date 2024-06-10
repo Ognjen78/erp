@@ -22,6 +22,27 @@ namespace ErpProject.Controllers
             modelBuilder.Entity<ShippingAddress>().ToTable("shipping_address", schema: "erp");
             modelBuilder.Entity<Order>().ToTable("Orders", schema: "erp");
             modelBuilder.Entity<OrderItem>().ToTable("order_items", schema: "erp");
+
+
+            modelBuilder.Entity<Order>()
+            .Property(o => o.items_price)
+            .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Order>()
+                .Property(o => o.total_price)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Order>()
+                .Property(o => o.transaction_amount)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.price)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<ShippingAddress>()
+                .Property(s => s.shipping_price)
+                .HasColumnType("decimal(18,2)");
         }
 
 

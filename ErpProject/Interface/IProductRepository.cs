@@ -8,6 +8,8 @@ namespace ErpProject.Interface
         Product getProductById(int id);
         Product addProduct(Product product);    
         Product updateProduct(Product product);
-        void deleteProduct(int id); 
+        void deleteProduct(int id);
+
+        Task<List<Product>> search(string searchTerm);
     }
 }

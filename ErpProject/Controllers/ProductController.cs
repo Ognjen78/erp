@@ -30,7 +30,9 @@ namespace ErpProject.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<List<Product>> GetAllProducts()
         {
-            var res = productRepository.getAllProducts();
+            
+
+            var res = productRepository.getAllProducts().ToList();
             if ( res  == null || res.Count == 0)
             {
                 return NoContent();
@@ -54,7 +56,7 @@ namespace ErpProject.Controllers
 
 
         [HttpPost]
-        [Authorize(Policy = "RequireAdminRole")]
+        //[Authorize(Policy = "RequireAdminRole")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -72,7 +74,7 @@ namespace ErpProject.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "RequireAdminRole")]
+        //[Authorize(Policy = "RequireAdminRole")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Product> UpdateProduct(Product product)
@@ -94,7 +96,7 @@ namespace ErpProject.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "RequireAdminRole")]
+       // [Authorize(Policy = "RequireAdminRole")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
@@ -115,6 +117,27 @@ namespace ErpProject.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Delete Error");
             }
         }
+
+      /*  [AllowAnonymous]
+        [HttpGet("search")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<List<Product>>> SearchProducts([FromQuery] string searchTerm)
+        {
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                return BadRequest("Search term is required.");
+            }
+
+            var results = await productRepository.search(searchTerm);
+
+            if (results == null || !results.Any())
+            {
+                return NotFound("No products found for the provided search term.");
+            }
+
+            return Ok(results);
+        } */
 
 
 

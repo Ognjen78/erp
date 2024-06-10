@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ErpProject.DTO;
+using ErpProject.Helpers;
 using ErpProject.Interface;
 using ErpProject.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -11,16 +12,18 @@ namespace ErpProject.Controllers
     [ApiController]
     [Route("/api/sportbasic/orders")]
     [EnableCors("AllowOrigin")]
-    [Authorize(Policy = "RequireAdminRole")]
+   // [Authorize(Policy = "RequireAdminRole")]
     public class OrderController : Controller
     {
         private readonly IOrderRepository orderRepository;
         private readonly IMapper mapper;
+        private readonly OrderService orderService;
 
-        public OrderController(IOrderRepository orderRepository, IMapper mapper)
+        public OrderController(IOrderRepository orderRepository, IMapper mapper, OrderService orderService)
         {
             this.orderRepository = orderRepository;
             this.mapper = mapper;
+            this.orderService = orderService;
         }
 
         [HttpGet]
@@ -52,19 +55,20 @@ namespace ErpProject.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public ActionResult<Order> CreateOrder([FromBody] Order order)
+        public async Task<ActionResult<Order>> CreateOrder([FromBody] CreateOrderRequest request)
         {
-            try
-            {
-                orderRepository.addOrder(order);
-                return Ok(mapper.Map<OrderConfirmDto>(order));
-            }
-            catch
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Post Error");
-            }
-            
+                try
+                {
+                    var order = await orderService.CreateOrder(request);
+                    return Ok(mapper.Map<OrderConfirmDto>(order));
+                }
+                catch
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Post Error");
+                }
         }
+
+        
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -28,8 +28,8 @@ namespace ErpProject.Controllers
 
             if (authenticationHelper.AuthenticatePrincipal(userLogin))
             {
-                var tokenString = authenticationHelper.GenerateJwt(userLogin, "3d4f6xR@#rD!d9P$8GhJk5lN8Q2s5vY");
-                return Ok(new { Token = tokenString });
+                var (tokenString, user) = authenticationHelper.GenerateJwt(userLogin, "3d4f6xR@#rD!d9P$8GhJk5lN8Q2s5vY");
+                return Ok(new { Token = tokenString, User = user });
             }
 
 

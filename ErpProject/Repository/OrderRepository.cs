@@ -41,18 +41,19 @@ namespace ErpProject.Repository
 
         public Order updateOrder(Order order)
         {
-            var o  = getOrderById(order.id_order);
-            o.order_date = order.order_date;
-            o.items_price = order.items_price;
-            o.shipping_price = order.shipping_price;
-            o.total_price = order.total_price;
-            o.id_transaction = order.id_transaction;
-            o.transaction_date = order.transaction_date;
-            o.transaction_amount = order.transaction_amount;
-            o.payment_status = order.payment_status;
-            o.id_user = order.id_user;
-            o.id_shipping = order.id_shipping;
-            dbContext.SaveChanges();
+            var o  = dbContext.Orders.Find(order.id_order);
+            if (o != null)
+            {
+                o.order_date = order.order_date;
+                o.items_price = order.items_price;
+                o.total_price = order.total_price;
+                o.id_transaction = order.id_transaction;
+                o.transaction_date = order.transaction_date;
+                o.transaction_amount = order.transaction_amount;
+                o.id_user = order.id_user;
+                o.id_shipping = order.id_shipping;
+                dbContext.SaveChanges();
+            }
             return order;
         }
     }

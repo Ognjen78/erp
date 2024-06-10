@@ -1,6 +1,7 @@
 ﻿using ErpProject.Controllers;
 using ErpProject.Interface;
 using ErpProject.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 
 namespace ErpProject.Repository
@@ -84,6 +85,11 @@ namespace ErpProject.Repository
         {
             var unique = dbContext.Users.Any(u => u.email == email);
             return unique;
+        }
+
+        public User GetUserByUsername(string username)
+        {
+            return dbContext.Users.SingleOrDefault(user => user.username == username);
         }
 
     }

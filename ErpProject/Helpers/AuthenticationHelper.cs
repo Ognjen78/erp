@@ -1,5 +1,6 @@
 ﻿using ErpProject.DTO;
 using ErpProject.Interface;
+using ErpProject.Repository;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -36,25 +37,45 @@ namespace WebApplication5.Helpers
             return false;
         }
 
-        public string GenerateJwt(UserLoginDto userLogin, string secretKey)
+        public (string token, UserDto user) GenerateJwt(UserLoginDto userLogin, string secretKey)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            
+            var user = userRepository.GetUserByUsername(userLogin.username);
+            var admin = adminRepository.GetAdminByUsername(userLogin.username);
+            if (user == null && admin == null)
+            {
+                throw new NullReferenceException("User 0r admin not found.");
+            }
+
+
             var claims = new List<Claim>
             {
                  new Claim(ClaimTypes.NameIdentifier, userLogin.username) 
                 
             };
 
-            if (adminRepository.AdminWithCredentialsExists(userLogin.username, userLogin.password)) 
+            string role;
+            string username, email;
+            string name = string.Empty; 
+            string surname = string.Empty;
+
+            if (admin != null)
             {
                 claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+                role = "Admin";
+                username = admin.username;
+                email = admin.email;
             }
             else
             {
                 claims.Add(new Claim(ClaimTypes.Role, "User"));
+                role = "User";
+                username = user.username;
+                name = user.name;
+                surname = user.surname;
+                email = user.email;
             }
 
 
@@ -66,7 +87,22 @@ namespace WebApplication5.Helpers
                 signingCredentials: credentials
             );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            
+
+            
+
+            var userDto = new UserDto
+            {
+                username = username,
+                name = name,
+                surname = surname,
+                email = email,
+                role = role
+            };
+
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return (tokenString, userDto);
         }
 
        

@@ -11,5 +11,7 @@ namespace ErpProject.Interface
         void deleteUser(Guid id);
         public bool UserWithCredentialsExists(string email, string password);
         public bool uniqueEmail(string email);
+
+        User GetUserByUsername(string username);
     }
 }

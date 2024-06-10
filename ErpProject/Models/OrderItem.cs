@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ErpProject.Models
 {
@@ -10,6 +11,9 @@ namespace ErpProject.Models
         public int id_product { get; set; }
         public int quantity { get; set; }
         public decimal price { get; set; }
+
+        [ForeignKey("id_order")]
+        public Order Order { get; set; }
 
     }
 }

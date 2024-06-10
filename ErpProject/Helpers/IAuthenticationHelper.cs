@@ -7,6 +7,6 @@ namespace WebApplication5.Helpers
     {
         public bool AuthenticatePrincipal(UserLoginDto userLogin);
 
-        public string GenerateJwt(UserLoginDto userLogin, string secretKey);
+        public (string token, UserDto user) GenerateJwt(UserLoginDto userLogin, string secretKey);
     }
 }

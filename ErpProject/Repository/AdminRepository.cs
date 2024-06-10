@@ -88,6 +88,11 @@ namespace ErpProject.Repository
             return false;
         }
 
+        public Admin GetAdminByUsername(string username)
+        {
+            return dbContext.Admins.SingleOrDefault(user => user.username == username);
+        }
+
 
     }
 }

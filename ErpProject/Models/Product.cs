@@ -16,6 +16,10 @@ namespace ErpProject.Models
         public decimal price { get; set; }
         
         public int stock { get; set; }
+
+        public string imageUrl { get; set; }    
+
+        public string gender { get; set; }
         
     }
 }
