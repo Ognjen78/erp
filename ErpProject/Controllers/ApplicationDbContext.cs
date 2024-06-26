@@ -14,7 +14,7 @@ namespace ErpProject.Controllers
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.HasDefaultSchema("erp"); // Postavljanje podrazumevane šeme
+            modelBuilder.HasDefaultSchema("erp"); 
 
             modelBuilder.Entity<User>().ToTable("Users", schema: "erp");
             modelBuilder.Entity<Admin>().ToTable("Admins", schema: "erp");
@@ -37,6 +37,10 @@ namespace ErpProject.Controllers
                 .HasColumnType("decimal(18,2)");
 
             modelBuilder.Entity<Product>()
+                .Property(p => p.price)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<OrderItem>()
                 .Property(p => p.price)
                 .HasColumnType("decimal(18,2)");
 

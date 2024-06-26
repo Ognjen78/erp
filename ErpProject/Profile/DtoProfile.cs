@@ -11,8 +11,9 @@ namespace ErpProject.Profile
         {
             CreateMap<User, UserConfirmDto>().ReverseMap();
             CreateMap<Admin, AdminConfirmDto>().ReverseMap();
-            CreateMap<Order, OrderConfirmDto>().ReverseMap();
+            CreateMap<Order, OrderConfirmDto>().ReverseMap().ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.OrderItems));
             CreateMap<OrderItem, OrderItemConfirmDto>().ReverseMap();
+            CreateMap<OrderItem, OrderItemDto>().ReverseMap();
             CreateMap<Product, ProductConfirmDto>().ReverseMap();
             CreateMap<ShippingAddress, ShippingConfirmDto>().ReverseMap();
         }

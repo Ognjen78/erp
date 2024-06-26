@@ -60,15 +60,15 @@ namespace ErpProject.Repository
             return product;
         }
 
-        public async Task<List<Product>> search(string searchTerm)
+       /* public async Task<List<Product>> search(string searchTerm)
         {
             var normalize = searchTerm.ToLower();
             var result = await dbContext.Products
                 .Where(u => u.category.ToLower().Contains(normalize) || u.name.ToLower().Contains(normalize)).ToListAsync();
             return result;
-        }
+        }*/
 
-        public List<Product> sort(bool asc)
+       /* public List<Product> sort(bool asc)
         {
             var result = getAllProducts();
 
@@ -83,7 +83,7 @@ namespace ErpProject.Repository
                 return sorted;
             } 
               
-        }
+        } */
 
        /* public List<Product> getAllProducts(int page, int pageSize)
         {

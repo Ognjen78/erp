@@ -25,7 +25,7 @@ namespace ErpProject.Controllers
 
 
         [HttpGet]
-       // [Authorize(Policy = "RequireAdminRole")]
+        [Authorize(Policy = "RequireAdminRole")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<List<User>> GetAllUsers()
@@ -39,7 +39,7 @@ namespace ErpProject.Controllers
         }
 
         [HttpGet("{id}")]
-      //  [Authorize(Policy = "RequireAdminRole")]
+        [Authorize(Policy = "RequireAdminRole")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public ActionResult<User> GetUserById(Guid id)

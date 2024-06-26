@@ -66,7 +66,7 @@ namespace ErpProject.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Insert error");
            } 
         }
-
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -84,7 +84,7 @@ namespace ErpProject.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Update error");
             }
         }
-
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpDelete("{id}")]
         public IActionResult DeleteOrderItem(int id)
         {

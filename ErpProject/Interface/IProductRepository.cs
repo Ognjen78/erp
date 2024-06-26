@@ -10,6 +10,6 @@ namespace ErpProject.Interface
         Product updateProduct(Product product);
         void deleteProduct(int id);
 
-        Task<List<Product>> search(string searchTerm);
+        //Task<List<Product>> search(string searchTerm);
     }
 }

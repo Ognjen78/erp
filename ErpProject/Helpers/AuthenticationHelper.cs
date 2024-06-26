@@ -60,6 +60,7 @@ namespace WebApplication5.Helpers
             string username, email;
             string name = string.Empty; 
             string surname = string.Empty;
+            Guid id_user;
 
             if (admin != null)
             {
@@ -67,6 +68,7 @@ namespace WebApplication5.Helpers
                 role = "Admin";
                 username = admin.username;
                 email = admin.email;
+                id_user = admin.id_admin;
             }
             else
             {
@@ -76,6 +78,7 @@ namespace WebApplication5.Helpers
                 name = user.name;
                 surname = user.surname;
                 email = user.email;
+                id_user = user.id_user;
             }
 
 
@@ -97,7 +100,8 @@ namespace WebApplication5.Helpers
                 name = name,
                 surname = surname,
                 email = email,
-                role = role
+                role = role,
+                id_user = id_user
             };
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);

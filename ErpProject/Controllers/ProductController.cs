@@ -56,7 +56,7 @@ namespace ErpProject.Controllers
 
 
         [HttpPost]
-        //[Authorize(Policy = "RequireAdminRole")]
+        [Authorize(Policy = "RequireAdminRole")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -74,7 +74,7 @@ namespace ErpProject.Controllers
         }
 
         [HttpPut("{id}")]
-        //[Authorize(Policy = "RequireAdminRole")]
+        [Authorize(Policy = "RequireAdminRole")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Product> UpdateProduct(Product product)
@@ -96,7 +96,7 @@ namespace ErpProject.Controllers
         }
 
         [HttpDelete("{id}")]
-       // [Authorize(Policy = "RequireAdminRole")]
+        [Authorize(Policy = "RequireAdminRole")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 

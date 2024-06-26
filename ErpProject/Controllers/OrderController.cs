@@ -57,19 +57,24 @@ namespace ErpProject.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<Order>> CreateOrder([FromBody] CreateOrderRequest request)
         {
-                try
-                {
-                    var order = await orderService.CreateOrder(request);
-                    return Ok(mapper.Map<OrderConfirmDto>(order));
-                }
-                catch
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Post Error");
-                }
+            if (request == null || !ModelState.IsValid)
+            {
+                return BadRequest(ModelState); 
+            }
+
+            try
+            {
+                var order = await orderService.CreateOrder(request);
+                return Ok(mapper.Map<OrderConfirmDto>(order));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Post Error: {ex.Message}");
+            }
         }
 
-        
 
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -87,7 +92,7 @@ namespace ErpProject.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Update error");
             }
         }
-
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpDelete("{id}")]
         public IActionResult DeleteOrder(int id)
         {

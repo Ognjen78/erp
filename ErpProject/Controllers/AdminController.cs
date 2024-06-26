@@ -13,7 +13,7 @@ namespace ErpProject.Controllers
     [ApiController]
     [Route("/api/sportbasic/admins")]
     [EnableCors("AllowOrigin")]
-    //[Authorize(Policy = "RequireAdminRole")]
+    [Authorize(Policy = "RequireAdminRole")]
     public class AdminController : Controller
     {
         private readonly IAdminRepository adminRepository;
