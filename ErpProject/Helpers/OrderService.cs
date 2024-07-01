@@ -16,7 +16,7 @@ namespace ErpProject.Helpers
             this.orderRepository = orderRepository;
         }
 
-        public async Task<Order> CreateOrder(CreateOrderRequest request)
+        public async Task<Order> CreateOrder(OrderDto request)
         {
             var order = new Order
             {
@@ -30,17 +30,19 @@ namespace ErpProject.Helpers
 
             decimal itemsPrice = 0;
 
-            foreach (var item in request.Items)
+            foreach (var item in request.items)
             {
                 var product = await dbContext.Products.FindAsync(item.id_product);
                 if (product != null)
                 {
                     var orderItem = new OrderItem
                     {
-                        id_product = item.id_product,
+                        id_product = product.id_product,
                         quantity = item.quantity,
                         price = product.price * item.quantity
                     };
+
+                    Console.WriteLine(orderItem);
                     order.OrderItems.Add(orderItem);
                     itemsPrice += orderItem.price;
                 }
@@ -50,10 +52,12 @@ namespace ErpProject.Helpers
             decimal shippingPrice = shippingAddress?.shipping_price ?? 0;
 
             order.items_price = itemsPrice;
-            order.total_price = itemsPrice + shippingPrice;
-            order.transaction_amount = order.total_price;
+            order.total_price = request.total_price;
+            order.transaction_amount = request.total_price;
 
-            return orderRepository.addOrder(order);
+            await orderRepository.addOrder(order);
+
+            return order;
         }
     }
 }

@@ -55,7 +55,7 @@ namespace ErpProject.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<Order>> CreateOrder([FromBody] CreateOrderRequest request)
+        public async Task<ActionResult<Order>> CreateOrder([FromBody] OrderDto request)
         {
             if (request == null || !ModelState.IsValid)
             {

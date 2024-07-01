@@ -12,10 +12,10 @@ namespace ErpProject.Repository
             this.dbContext = dbContext;
         }
 
-        public Order addOrder(Order order)
+        public async Task<Order> addOrder(Order order)
         {
-            dbContext.Orders.Add(order);
-            dbContext.SaveChanges();
+            dbContext.Orders.AddAsync(order);
+            await dbContext.SaveChangesAsync();
             return order;
         }
 

@@ -6,7 +6,7 @@ namespace ErpProject.Interface
     {
         List<Order> getAllOrders();
         Order getOrderById(int id); 
-        Order addOrder(Order order);    
+        Task<Order> addOrder(Order order);    
         Order updateOrder(Order order); 
         void deleteOrder(int id);  
     }
